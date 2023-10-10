@@ -1,6 +1,7 @@
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Timers;
+using System.Windows.Forms;
 
 namespace NetSpeed
 {
@@ -65,22 +66,21 @@ namespace NetSpeed
             else
             {
                 label1.Text = ((SpeedSum/1024)).ToString();
-                Graphics Graphic;
-                Bitmap iconBitmap = new Bitmap(51, 32);
-                Graphic = Graphics.FromImage(iconBitmap);
-                Graphic.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 
-                StringFormat format = new StringFormat();
-                format.Alignment = StringAlignment.Center;
-                //Graphic.ScaleTransform(1, 1);
-                Graphic.DrawString(
-                (SpeedSum / 1024).ToString(),
-                new Font("Tahoma", 16, FontStyle.Bold),
-                new SolidBrush(Color.FromArgb(255, 255, 255)),
-                new RectangleF(-6, 2, 54, 32),
-                format
-);
-                Icon icon = Icon.FromHandle(iconBitmap.GetHicon());
+                Font fontToUse = new Font("Trebuchet MS", 10, FontStyle.Regular, GraphicsUnit.Pixel);
+                Brush brushToUse = new SolidBrush(Color.White);
+                Bitmap bitmapText = new Bitmap(16, 16);
+                Graphics g = System.Drawing.Graphics.FromImage(bitmapText);
+
+                IntPtr hIcon;
+
+                g.Clear(Color.Transparent);
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                g.DrawString(label1.Text, fontToUse, brushToUse, -2, 0);
+                hIcon = (bitmapText.GetHicon());
+                notifyIcon.Icon = System.Drawing.Icon.FromHandle(hIcon);
+                //DestroyIcon(hIcon.ToInt32);
+                Icon icon = Icon.FromHandle(hIcon);
                 
                     // do what you need to do with the icon
                     notifyIcon.Icon = icon;
